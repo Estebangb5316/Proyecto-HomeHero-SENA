@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Contacto</title>
+  <link rel="stylesheet" media="all" href="\views\Contacto.css" />
+  <link rel="icon" href="\img\My project-1 (4).png">
+  <script src="https://kit.fontawesome.com/c353683ce0.js" crossorigin="anonymous"></script>
+
+
+</head>
+
+<body class="hidden">
+
+  <div id="loading" class="center">
+    <div class="loading-wave">
+      <div class="loading-bar"></div>
+      <div class="loading-bar"></div>
+      <div class="loading-bar"></div>
+      <div class="loading-bar"></div>
+    </div>
+  </div>
+
+  <header>
+    <a href="\index.html"> <Img src="\img\My project-1 (4).png" class="logo" width="50%"> </a>
+
+    <div class="toggle" onclick="toggleMenu()"></div>
+    <ul class="navigation">
+      <li><a href="\index.html" class="link slider-left">Inicio</a></li>
+      <li><a href="\menu\Servicios.html" class="link">Servicios</a></li>
+      <li><a href="\menu\Nosotros.html" class="link">Nosotros</a></li>
+      <li><a href="\menu\Contacto.html" class="link">Contacto</a></li>
+      <li><a href="\menu\mercancia.htm" class="link">Mercancia</a></li>
+
+
+    </ul>
+
+  </header>
+
+
+  <div id="container">
+
+    <h1>CONTACTA CON NOSOTROS <i class="fa-solid fa-phone fa-bounce"></i></h1>
+
+    <form id="form">
+      <div class="field">
+        <label for="from_name">from_name</label>
+        <input type="text" name="from_name" id="from_name">
+      </div>
+      <div class="field">
+        <label for="to_name">to_name</label>
+        <input type="text" name="to_name" id="to_name">
+      </div>
+      <div class="field">
+        <label for="message">message</label>
+        <input type="text" name="message" id="message">
+      </div>
+      <div class="field">
+        <label for="reply_to">reply_to</label>
+        <input type="text" name="reply_to" id="reply_to">
+      </div>
+
+      <input type="submit" id="button" value="Send Email" >
+    </form>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+
+    <script type="text/javascript">
+      emailjs.init('OKrxXt-PGX6G1C8qq')
+    </script>
+
+    <iframe
+      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4728.576983110629!2d-74.27846746777816!3d4.727726872785617!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e3f79c78331682b%3A0xed730eb160d6ec70!2sColegio%20T%C3%A9cnico%20Santo%20Tom%C3%A1s!5e0!3m2!1sen!2sco!4v1684780340479!5m2!1sen!2sco"
+      width="400" height="300" style="border:0;" allowfullscreen="" loading="lazy"
+      referrerpolicy="no-referrer-when-downgrade" </iframe>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+  </div>
+  <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+
+  <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
+
+  <script>
+    var swiper = new Swiper('.swiper', {
+      effect: 'coverflow',
+      grabCursor: true,
+      centeredSlides: true,
+      slidesPerView: 'auto',
+      coverflowEffect: {
+        rotate: 0,
+        stretch: 0,
+        depth: 200,
+        modifier: 1,
+        slideShadows: true,
+      },
+      pagination: {
+        el: '.swiper-pagination',
+      },
+      loop: true,
+
+    });
+
+
+    function toggleMenu() {
+      const menuToggle = document.querySelector('.toggle');
+      const navigation = document.querySelector('.navigation');
+      menuToggle.classList.toggle('active')
+      navigation.classList.toggle('active')
+    }
+
+    const chatBtn = document.getElementById('chat-btn');
+    const chatContainer = document.getElementById('chat-container');
+
+    chatBtn.addEventListener('click', function () {
+      if (chatContainer.style.display === 'none') {
+        chatContainer.style.display = 'block';
+      } else {
+        chatContainer.style.display = 'none';
+      }
+    });
+  </script>
+
+
+
+  <script src="\js\contacto.js" type="module"></script>
+
+
+
+
+
+</body>
+
+</html>

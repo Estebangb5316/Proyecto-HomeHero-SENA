@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mercancia</title>
+  <link rel="stylesheet" href="\views\mercancia.css">
+  <link rel="icon" href="\img\My project-1 (4).png">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://kit.fontawesome.com/c353683ce0.js" crossorigin="anonymous"></script>
+
+</head>
+
+<body class="hidden">
+
+  <div id="loading" class="center">
+    <div class="loading-wave">
+      <div class="loading-bar"></div>
+      <div class="loading-bar"></div>
+      <div class="loading-bar"></div>
+      <div class="loading-bar"></div>
+    </div>
+  </div>
+
+  <section>
+
+    <header>
+      <a href="\index.html"> <Img src="\img\My project-1 (4).png" class="logo" width="50%"> </a>
+
+      <div class="toggle" onclick="toggleMenu()"></div>
+      <ul class="navigation">
+        <li><a href="\index.html" class="link slider-left">Inicio</a></li>
+        <li><a href="\menu\Servicios.html" class="link">Servicios</a></li>
+        <li><a href="\menu\Nosotros.html" class="link">Nosotros</a></li>
+        <li><a href="\menu\Contacto.html" class="link">Contacto</a></li>
+        <li><a href="Mercancia.html" class="link">Mercancia</a></li>
+
+
+
+      </ul>
+
+    </header>
+
+
+    <h1 class="title">CONOCE NUESTROS PRODUCTOS</h1>
+    <p class="Description-title">En nuestro sitio web, además de ofrecer servicios profesionales de reparación y
+      mantenimiento para tu hogar, también hemos <br> creado una mini tienda especial con una variedad de ropa y
+      accesorios. Queremos brindarte la oportunidad de <br>encontrar artículos únicos y prácticos que complementen tu
+      estilo de vida y añadan un toque <br>especial a tu hogar.</p>
+
+
+
+    <section class="store">
+
+
+
+      <div class="container">
+
+
+
+
+        <div class="product-list">
+          <div class="product">
+            <img id="img-1" src="\img\maleta negra.png" alt="Maleta negra">
+            <h3 class="product-name">Mochila para laptop de 17” de VistaPrints</h3>          
+          </div>
+          <div class="product">
+            <img id="img-2" src="\img\tula blanca.png" alt="Producto 2">
+            <h3 class="product-name">
+              Mochila Oriole con cierre de cordón</h3>
+          </div>
+          <div class="product">
+            <img src="\img\Buzo gris.png" alt="Producto 3">
+            <h3 class="product-name">Sudadera JERZEES NuBlend con capucha</h3>
+          </div>
+          <div class="product">
+            <img src="\img\Gorra azul.png" alt="Producto 4">
+            <h3 class="product-name">Gorra desestructurada ajustable de New Era</h3>
+          </div>
+          <div class="product">
+            <img src="\img\camiseta negra.png" alt="Producto 5">
+            <h3 class="product-name">Camiseta Port & Company Fan Favorite</h3>
+           
+          </div>
+          <div class="product">
+            <img src="\img\Tasa blanca2.png" alt="Producto 6">
+            <h3 class="product-name">Taza blanca</h3>
+            
+          </div>
+          <div class="product">
+            <img src="\img\Botella agua.png" alt="Producto 7">
+            <h3 class="product-name">Botella de agua para niños</h3>
+           
+          </div>
+          <div class="product">
+            <img src="\img\sticker.png" alt="Producto 8">
+            <h3 class="product-name">Sticker HomeHero</h3>
+            
+          </div>
+          <div class="product">
+            <img src="\img\llAVERO.png" alt="Producto 9">
+            <h3 class="product-name">
+              Llavero Chroma Softy con linterna LED</h3>
+            
+          </div>
+          <div class="product">
+            <img src="\img\chaqueta.png" alt="Producto 10">
+            <h3 class="product-name">Chaqueta inflada plegable de VistaPrint</h3>
+            
+          </div>
+          <div class="product">
+            <img src="\img\Libreta.png" alt="Producto 11">
+            <h3 class="product-name">Libreta blanca</h3>
+           
+          </div>
+          <div class="product">
+            <img src="\img\botella.png" alt="Producto 12">
+            <h3 class="product-name">Botella térmica de acero inoxidable de boca ancha - 22 onzas.</h3>
+            
+          </div>
+        </div>
+
+
+
+      </div>
+
+
+      </div>
+
+
+    </section>
+
+
+
+  </section>
+  <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+  <script src="/js\Servicios.js" type="module"></script>
+  <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
+  <script>
+    var swiper = new Swiper('.swiper', {
+      effect: 'coverflow',
+      grabCursor: true,
+      centeredSlides: true,
+      slidesPerView: 'auto',
+      coverflowEffect: {
+        rotate: 0,
+        stretch: 0,
+        depth: 200,
+        modifier: 1,
+        slideShadows: true,
+      },
+      pagination: {
+        el: '.swiper-pagination',
+      },
+      loop: true,
+    });
+
+    function toggleMenu() {
+      const menuToggle = document.querySelector('.toggle');
+      const navigation = document.querySelector('.navigation');
+      menuToggle.classList.toggle('active')
+      navigation.classList.toggle('active')
+    }
+
+    const chatBtn = document.getElementById('chat-btn');
+    const chatContainer = document.getElementById('chat-container');
+
+    chatBtn.addEventListener('click', function () {
+      if (chatContainer.style.display === 'none') {
+        chatContainer.style.display = 'block';
+      } else {
+        chatContainer.style.display = 'none';
+      }
+    });
+
+    // Agregar al carrito
+    const addToCartButtons = document.querySelectorAll('.add-to-cart-btn');
+    addToCartButtons.forEach((button) => {
+      button.addEventListener('click', addToCart);
+    });
+
+    function addToCart(event) {
+      const product = event.target.getAttribute('data-product');
+      const price = event.target.getAttribute('data-price');
+
+      // Crear objeto con información del producto
+      const item = {
+        product: product,
+        price: price,
+      };
+
+      // Obtener carrito de localStorage
+      let cart = localStorage.getItem('cart');
+      if (cart) {
+        cart = JSON.parse(cart);
+      } else {
+        cart = [];
+      }
+
+      // Agregar el producto al carrito
+      cart.push(item);
+
+      // Guardar el carrito en localStorage
+      localStorage.setItem('cart', JSON.stringify(cart));
+
+      // Mostrar mensaje de éxito
+      Swal.fire({
+        icon: 'success',
+        title: '¡Producto agregado al carrito!',
+        showConfirmButton: false,
+        timer: 1500
+      });
+    }
+  </script>
+</body>
+
+</html>

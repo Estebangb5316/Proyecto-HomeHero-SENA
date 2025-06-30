@@ -1,0 +1,174 @@
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
+import { getFirestore, collection, getDocs, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
+
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional 
+const firebaseConfig = {
+  apiKey: "AIzaSyDtfL9s0NOXMfsTOLjhgunQwmei8Y1SG2U",
+  authDomain: "homehero-d79da.firebaseapp.com",
+  projectId: "homehero-d79da",
+  storageBucket: "homehero-d79da.appspot.com",
+  messagingSenderId: "324839475759",
+  appId: "1:324839475759:web:9660c338ee53fe2e1814da",
+  measurementId: "G-BGW4V4Q157"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+$(document).ready(function () {
+  $('#loading').fadeOut('slow');
+  $('body').removeClass('hidden');
+
+});
+
+getDocs(collection(db, "Technical", "2", "Electricity")).
+  then(querySnapshot => {
+    querySnapshot.forEach((doc) => {
+      var container = document.getElementById("container")
+      var card = document.createElement('div')
+      var card_Header = document.createElement('div')
+      var card_content = document.createElement('div')
+      var profile_image = document.createElement('div')
+      var nameandlastname = document.createElement('h3')
+      var city = document.createElement('h4')
+      var profession = document.createElement('h4')
+      var space = document.createElement('br')
+      var description = document.createElement('p')
+      var link1 = document.createElement('a')
+      var link2 = document.createElement('a')
+      var button1 = document.createElement('button')
+      var button2 = document.createElement('button')
+
+
+      //Asignar clases
+
+      card.className = 'card'
+      card_Header.className = 'card-header'
+      card_Header.style = "background-image: url('https://images.unsplash.com/photo-1540228232483-1b64a7024923?ixlib=rb-1.2.1&auto=format&fit=crop&w=967&q=80');"
+      card_content.className = 'card-content'
+      profile_image.className = 'profile-image'
+      profile_image.style = "background-image: url('https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png');"
+      button1.className = 'button1'
+      button2.className = 'button1'
+
+      button2.id = 'button2';
+
+      //Añadir los elementos
+      container.appendChild(card)
+      card.appendChild(card_Header)
+      card.appendChild(card_content)
+      card_content.appendChild(profile_image)
+      card_content.appendChild(nameandlastname)
+      card_content.appendChild(city)
+      card_content.appendChild(profession)
+      card_content.appendChild(space)
+      card_content.appendChild(description)
+      card_content.appendChild(link1)
+      card_content.appendChild(link2)
+      link1.appendChild(button1)
+      link2.appendChild(button2)
+
+      //Darle información
+      nameandlastname.textContent = doc.data().Nombre
+      city.textContent = doc.data().Ciudad + ", Cundinamarca"
+      profession.textContent = doc.data().Servicio
+      description.textContent = doc.data().Descripcion
+      if (doc.data().Foto == '') {
+        profile_image.style = "background-image: url('https://ceslava.s3-accelerate.amazonaws.com/2016/04/mistery-man-gravatar-wordpress-avatar-persona-misteriosa-510x510.png');"
+      }
+      else {
+        profile_image.style = "background-image: url('" + doc.data().Foto + "');"
+      }
+
+
+      button1.textContent = "Seleccionar Tecnico"
+      button2.textContent = "Ver Perfil"
+
+      const popup = document.getElementById("popup");
+      const popupClose = document.getElementById("popup-close");
+      const popupWhatsapp = document.getElementById("popup-whatsapp");
+      const name = document.getElementById("popup-name")
+      const citytechnical = document.getElementById("popup-city")
+      const servicetechnical = document.getElementById("popup-service")
+      const phonetechnical = document.getElementById("popup-phone")
+      const emailtechnical = document.getElementById("popup-email")
+      const picturetechnical = document.getElementById("popup-profile-image")
+
+      button2.addEventListener('click', function () {
+        popup.style.display = "block";
+        name.textContent = doc.data().Nombre
+        citytechnical.textContent = doc.data().Ciudad
+        servicetechnical.textContent = doc.data().Servicio
+        phonetechnical.textContent = doc.data().Telefono
+        emailtechnical.textContent = doc.data().Correo
+        if (doc.data().Foto == '') {
+          picturetechnical.style = "background-image: url('https://ceslava.s3-accelerate.amazonaws.com/2016/04/mistery-man-gravatar-wordpress-avatar-persona-misteriosa-510x510.png');"
+        }
+        else {
+         picturetechnical.style = "background-image: url('" + doc.data().Foto + "');"
+        }
+
+       
+        
+      });
+
+      popupClose.addEventListener("click", function () {
+        popup.style.display = "none";
+      });
+
+      popupWhatsapp.addEventListener("click", function () {
+        var phoneNumber = doc.data().Telefono;
+
+        var formattedPhoneNumber = phoneNumber.replace(/[^\d]/g, '');
+        var message = encodeURIComponent("Hola, vengo de HomeHero y estoy interesado en tus servicios.");
+        var whatsappLink = "https://wa.me/" + formattedPhoneNumber + "?text=" + message;
+
+        window.open(whatsappLink, '_blank');
+      });
+
+
+
+      button1.id = 'button1';
+      button1.addEventListener("click", function () {
+        var phoneNumber = doc.data().Telefono;
+        var formattedPhoneNumber = +57 +phoneNumber.replace(/[^\d]/g, '');
+        var message = encodeURIComponent("Hola, vengo de HomeHero y estoy interesado en tus servicios.");
+        var whatsappLink = "https://wa.me/" + formattedPhoneNumber + "?text=" + message;
+        window.open(whatsappLink, '_blank');
+      });
+
+    })
+  })
+
+  
+
+  document.addEventListener("DOMContentLoaded", function () {
+    const commentInput = document.getElementById("commentInput");
+    const submitBtn = document.getElementById("submitBtn");
+    const commentList = document.getElementById("commentList");
+  
+    submitBtn.addEventListener("click", function () {
+      const commentText = commentInput.value.trim();
+      if (commentText !== "" && addDoc(collection(db, "Technical", "1", "Comment"), {
+        Comentarios:"",
+        Id: user.uid
+      })) {
+        const commentDiv = document.createElement("div");
+        commentDiv.className = "comment";
+        commentDiv.textContent = commentText;
+        commentList.appendChild(commentDiv);
+        commentInput.value = "";
+      }
+    });
+  });
+
+
+
+
+
+
+

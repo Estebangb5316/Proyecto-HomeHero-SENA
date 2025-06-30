@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Inicio de Sesion</title>
+    <link rel="icon" href="\img\My project-1 (4).png">
+    <link rel="stylesheet" href="\views\logintecnicos.css">
+    <script src="https://kit.fontawesome.com/c353683ce0.js" crossorigin="anonymous"></script>
+       
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="content first-content">
+            <div class="first-column">
+                <h2 class="title title-primary">Bienvenido</h2>
+                <br>
+                <p class="description description-primary">¡Hola de nuevo! Es un placer verte en HomeHero.</p>
+                <p class="description description-primary">Inicia sesion para continuar</p>
+                <a href="\menu\Registertecnicos.html">
+                    <button id="signin" class="btn btn-primary">Registrarse</button>
+                </a>
+                <a href="\index.html">
+                    <button id="signin" class="btn btn-primary">Menu Principal</button>
+                </a>
+               
+            </div>    
+            <div class="second-column">
+                <h2 class="title title-second">Inicio sesion tecnicos</h2>
+                <div class="social-media">
+                    <ul class="list-social-media">
+                        <a class="link-social-media" href="#" id="googlebutton">
+                           
+                        </a>
+                        <a class="link-social-media" href="#">
+                            <li class="item-social-media">
+                                <i class="fab fa-google-plus-g"></i>
+                            </li>
+                        </a>
+                       
+                    </ul>
+                </div>
+                <p class="description description-second">O usa tu correo electrónico para iniciar sesion</p>
+                <form class="form">
+                    
+                    <label class="label-input" for="">
+                        <i class="far fa-envelope icon-modify "></i>
+                        <input type="email" placeholder="Correo Electronico" id="email">
+                    </label>
+
+                    <label class="label-input" for="">
+                        <i class="fa-solid fa-key icon-modify"></i>
+                        <input type="password" placeholder="Contraseña" id="password">
+                        <span class="toggle-password" id="toggle-password">
+                            <i class="fa fa-eye-slash" aria-hidden="true"></i>
+                        </span>
+                    </label>
+
+
+                    <a class="password" href="/menu\restorepasswordtecnicos.html">¿se te olvido la contraseña?</a>
+
+                    <button id="button1">Iniciar Sesion</button>        
+                </form>
+            </div>
+        </div>
+    </div>
+ <script src="\js\logintecnicos.js" type="module"></script>
+
+</body>
+</html>

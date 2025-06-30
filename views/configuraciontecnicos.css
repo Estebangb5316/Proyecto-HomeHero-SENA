@@ -1,0 +1,122 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+}
+
+header {
+  background-color: #04181A;
+  color: #fff;
+  padding: 20px;
+}
+
+header h1 {
+  margin: 0;
+}
+
+main {
+  padding: 20px;
+}
+
+.container {
+  max-width: 500px;
+  margin: 0 auto;
+  margin-top: 4%;
+}
+
+h2 {
+  margin-top: 0;
+  font-family: 'Roboto', sans-serif;
+}
+
+form {
+  margin-bottom: 20px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+input[type="password"] {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  border: 2px solid #ccc;
+  border-radius: 5px;
+}
+
+.changeservice {
+  width: 100%;
+  padding: 10px;
+  border: 2px solid #ccc;
+  border-radius: 5px;
+}
+
+#save,
+#logoutBtn,
+#backBtn,
+#deletebutton {
+  padding: 10px 20px;
+  background-color: #04181A;
+  color: #fff;
+  border: none;
+
+  font-size: 16px;
+  cursor: pointer;
+}
+
+#deletebutton {
+  background-color: rgb(134, 0, 0);
+}
+
+#save {
+  background-color: #1A96A0;
+}
+
+.change {
+  padding: 10px 20px;
+  background-color: #1A96A0;
+  color: #fff;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+
+footer {
+  background-color: #f8f8f8;
+  padding: 10px;
+  text-align: center;
+}
+
+
+header {
+  display: flex;
+}
+
+.user {
+  color: #1A96A0;
+  font-size: 18PX;
+}
+
+.changecity {
+  width: 100%;
+  padding: 10px;
+  border: 2px solid #ccc;
+  border-radius: 5px;
+}

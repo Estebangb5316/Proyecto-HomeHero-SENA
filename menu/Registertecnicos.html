@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Registro</title>
+    <link rel="icon" href="\img\My project-1 (4).png">
+    <link rel="stylesheet" href="\views\Registertecnicos.css">
+    <script src="https://kit.fontawesome.com/c353683ce0.js" crossorigin="anonymous"></script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+
+<body>
+    <div class="container">
+        <div class="content first-content">
+            <div class="first-column">
+                <h2 class="title title-primary">Bienvenido</h2>
+                <br>
+                <p class="description description-primary">¡Hola de nuevo! Es un placer verte en HomeHero.</p>
+                <p class="description description-primary">Gracias por ser parte de este proyecto <3 </p>
+                        <a href="\menu\logintecnicos.html">
+                            <button id="signin" class="btn btn-primary">Iniciar Sesion</button>
+                        </a>
+
+                        <a href="\index.html">
+                            <button id="signin" class="btn btn-primary">Menu Principal</button>
+                        </a>
+
+            </div>
+            <div class="second-column">
+                <h2 class="title title-second">Crea una cuenta de tecnico</h2>
+                <div class="social-media">
+                    <ul class="list-social-media">
+                        <a class="link-social-media" href="#">
+                           
+                        </a>
+                        <a class="link-social-media" href="#">
+                            <li class="item-social-media">
+                                <i class="fab fa-google-plus-g"></i>
+                            </li>
+                        </a>
+
+                    </ul>
+                </div>
+                <p class="description description-second">O usa tu correo electrónico para registrarte</p>
+                <form class="form">
+                    <label class="label-input" for="">
+                        <i class="far fa-user icon-modify"></i>
+                        <input type="text" placeholder="Nombre Completo" id="nameandlastname">
+                    </label>
+
+                    <label class="label-input" for="">
+                        <i class="far fa-user icon-modify"></i>
+                        <input type="number" placeholder="cedula ciudadana" id="cedula">
+                    </label>
+
+                    <label class="label-input" for="">
+                        <i class="fa-solid fa-phone icon-modify"></i>
+                        <input type="number" placeholder="Numero de telefono" id="numberphone">
+                    </label>
+
+                    <label class="label-input" for="">
+                        <i class="far fa-envelope icon-modify "></i>
+                        <input type="email" placeholder="Correo Electronico" id="email">
+                    </label>
+                    <label class="label-input" for="">
+                        <i class="fa-solid fa-cake-candles" style="color: #666f7f;"></i>
+                        <input type="number" placeholder="Edad" id="age">
+                    </label>
+
+
+                    <label class="label-input" for="">
+                        <i class="fa-sharp fa-solid fa-location-dot icon-modify" id="cake"></i>
+
+                        <select placeholder="Motivo" name="subject" id="city" required>
+                            <option disabled hidden selected>Elige tu ciudad</option>
+                            <option>Madrid</option>
+                            <option>Facatativa</option>
+                            <option>Funza</option>
+                            <option>Mosquera</option>
+
+                        </select>
+                    </label>
+
+                    <label class="label-input" for="">
+                        <i class="fa-sharp fa-solid fa-location-dot icon-modify"></i>
+
+                        <select placeholder="Motivo" name="subject" id="service" required>
+                            <option disabled hidden selected>Elige el servicio a realizar</option>
+                            <option>Plomeria</option>
+                            <option>Electricidad</option>
+                            <option>Cerrajeria</option>
+                            <option>Jardineria</option>
+                            <option>Pintura</option>
+                            <option>Electrodomesticos</option>
+                            <option>Mascotas</option>
+                            <option>Limpieza del hogar</option>
+                            <option>Vehiculos</option>
+                        </select>
+                    </label>
+
+
+                    <label class="label-input" for="">
+                        <i class="fa-solid fa-key icon-modify"></i>
+                        <input type="password" placeholder="Contraseña" id="password">
+                        <span class="toggle-password" id="toggle-password">
+                            <i class="fa fa-eye-slash" aria-hidden="true"></i>
+                        </span>
+                    </label>
+
+                    <label class="label-input" for="">
+                        <i class="fa-solid fa-key icon-modify"></i>
+                        <input type="password" placeholder="Confirmar Contraseña" id="confirmpassword">
+                        <span class="toggle-password" id="toggle-password1">
+                            <i class="fa fa-eye-slash" aria-hidden="true"></i>
+                        </span>
+                    </label>
+
+
+                    <button id="button2">Registrarse</button>
+
+                </form>
+            </div>
+        </div>
+
+    </div>
+    <script src="\js\Registertecnicos.js" type="module"></script>
+
+</body>
+
+</html>
