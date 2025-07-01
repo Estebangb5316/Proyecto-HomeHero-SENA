@@ -1,578 +1,183 @@
-$(document).ready(function () {
-    $('#loading').fadeOut('slow');
-    $('body').removeClass('hidden');
-
-});
-
-// Import the functions you need from the SDKs you need
-// Import the functions you need from the SDKs you need
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-auth.js";
-import { getFirestore, getDocs, collection, doc, getDoc, updateDoc, query, where } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
-import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.22.1//firebase-storage.js";
+import { getFirestore, getDocs, collection, query, where, doc, updateDoc } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
+import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-storage.js";
 
-
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+// TU CONFIGURACIÓN REAL DE FIREBASE (home-hero-new)
 const firebaseConfig = {
-    apiKey: "AIzaSyDtfL9s0NOXMfsTOLjhgunQwmei8Y1SG2U",
-    authDomain: "homehero-d79da.firebaseapp.com",
-    projectId: "homehero-d79da",
-    storageBucket: "homehero-d79da.appspot.com",
-    messagingSenderId: "324839475759",
-    appId: "1:324839475759:web:9660c338ee53fe2e1814da",
-    measurementId: "G-BGW4V4Q157"
+  apiKey: "AIzaSyDVySMb0nxA3B4MfFnFNj6z-IaLcF7JGa8",
+  authDomain: "home-hero-new.firebaseapp.com",
+  projectId: "home-hero-new",
+  storageBucket: "home-hero-new.appspot.com",
+  messagingSenderId: "410974637075",
+  appId: "1:410974637075:web:e6cbaa7376221a9684c3e6",
+  measurementId: "G-96EQ038M15"
 };
 
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const auth = getAuth();
 const db = getFirestore(app);
-const storage = getStorage();
+const auth = getAuth();
+const storage = getStorage(app);
 
+const categories = [
+  ["Technical", "1", "Plumbing"],
+  ["Technical", "2", "Electricity"],
+  ["Technical", "3", "locksmith"],
+  ["Technical", "4", "Gardening"],
+  ["Technical", "5", "Paint"],
+  ["Technical", "6", "Homeappliances"],
+  ["Technical", "7", "Pets"],
+  ["Technical", "8", "CleanHome"],
+  ["Technical", "9", "Vehicles"]
+];
 
-onAuthStateChanged(auth, (user) => {
-    if (user) {
+function fillProfile(userData) {
+  document.getElementById("nameandlastname").textContent = userData.Nombre || "";
+  document.getElementById("phone").textContent = userData.Telefono || "";
+  document.getElementById("city").textContent = userData.Ciudad || "";
+  document.getElementById("age").textContent = userData.Edad || "";
+  document.getElementById("service").textContent = userData.Servicio || "";
+  document.getElementById("Description").textContent = userData.Descripcion || "";
+  const foto = document.getElementById("contenedor-imagen");
+  if (!userData.Foto || userData.Foto === '') {
+    foto.style.backgroundImage = "url('https://ceslava.s3-accelerate.amazonaws.com/2016/04/mistery-man-gravatar-wordpress-avatar-persona-misteriosa-510x510.png')";
+  } else {
+    foto.style.backgroundImage = `url('${userData.Foto}')`;
+  }
+}
 
-        getDocs(query(collection(db, "Technical", "1", "Plumbing"), where("Id", "==", user.uid)))
-            .then(querySnapshot => {
-                querySnapshot.forEach((doc) => {
+function clearProfile() {
+  document.getElementById("nameandlastname").textContent = "Sin datos";
+  document.getElementById("phone").textContent = "";
+  document.getElementById("city").textContent = "";
+  document.getElementById("age").textContent = "";
+  document.getElementById("service").textContent = "";
+  document.getElementById("Description").textContent = "";
+  const foto = document.getElementById("contenedor-imagen");
+  foto.style.backgroundImage = "url('https://ceslava.s3-accelerate.amazonaws.com/2016/04/mistery-man-gravatar-wordpress-avatar-persona-misteriosa-510x510.png')";
+}
 
-                    var nameandlastname = document.getElementById("nameandlastname")
-                    var numberphone = document.getElementById("phone")
-                    var city = document.getElementById("city")
-                    var age = document.getElementById("age")
-                    var service = document.getElementById("service")
-                    var description = document.getElementById("Description")
-                    var foto = document.getElementById("contenedor-imagen")
+onAuthStateChanged(auth, async (user) => {
+  if (!user) {
+    Swal.fire({
+      icon: 'error',
+      iconColor: '#1A96A0',
+      confirmButtonColor: '#1A96A0',
+      title: '¡No has iniciado sesión!',
+      text: 'Inicia sesión para continuar',
+      allowOutsideClick: false,
+      allowEscapeKey: false,
+      allowEnterKey: false,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        location.href = "/menu/logintecnicos.html";
+      }
+    });
+    return;
+  }
 
+  let userData = null;
+  let docRef = null;
+  let docPath = null;
 
-                    nameandlastname.textContent = doc.data().Nombre;
-                    numberphone.textContent = doc.data().Telefono;
-                    city.textContent = doc.data().Ciudad;
-                    age.textContent = doc.data().Edad;
-                    service.textContent = doc.data().Servicio;
-                    description.textContent = doc.data().Descripcion
-                    if (doc.data().Foto == '') {
-                        foto.style = "background-image: url('https://ceslava.s3-accelerate.amazonaws.com/2016/04/mistery-man-gravatar-wordpress-avatar-persona-misteriosa-510x510.png');"
-                    }
-                    else {
-                        foto.style = "background-image: url('" + doc.data().Foto + "');"
-                    }
-                })
-            })
-
-        getDocs(query(collection(db, "Technical", "2", "Electricity"), where("Id", "==", user.uid)))
-            .then(querySnapshot => {
-                querySnapshot.forEach((doc) => {
-
-                    var nameandlastname = document.getElementById("nameandlastname")
-                    var numberphone = document.getElementById("phone")
-                    var city = document.getElementById("city")
-                    var age = document.getElementById("age")
-                    var service = document.getElementById("service")
-                    var description = document.getElementById("Description")
-                    var foto = document.getElementById("contenedor-imagen")
-
-
-
-                    nameandlastname.textContent = doc.data().Nombre;
-                    numberphone.textContent = doc.data().Telefono;
-                    city.textContent = doc.data().Ciudad;
-                    age.textContent = doc.data().Edad;
-                    service.textContent = doc.data().Servicio;
-                    description.textContent = doc.data().Descripcion
-                    if (doc.data().Foto == '') {
-                        foto.style = "background-image: url('https://ceslava.s3-accelerate.amazonaws.com/2016/04/mistery-man-gravatar-wordpress-avatar-persona-misteriosa-510x510.png');"
-                    }
-                    else {
-                        foto.style = "background-image: url('" + doc.data().Foto + "');"
-                    }
-
-                })
-            })
-        getDocs(query(collection(db, "Technical", "3", "locksmith"), where("Id", "==", user.uid)))
-            .then(querySnapshot => {
-                querySnapshot.forEach((doc) => {
-
-                    var nameandlastname = document.getElementById("nameandlastname")
-                    var numberphone = document.getElementById("phone")
-                    var city = document.getElementById("city")
-                    var age = document.getElementById("age")
-                    var service = document.getElementById("service")
-                    var description = document.getElementById("Description")
-                    var foto = document.getElementById("contenedor-imagen")
-
-
-
-                    nameandlastname.textContent = doc.data().Nombre;
-                    numberphone.textContent = doc.data().Telefono;
-                    city.textContent = doc.data().Ciudad;
-                    age.textContent = doc.data().Edad;
-                    service.textContent = doc.data().Servicio;
-                    description.textContent = doc.data().Descripcion
-                    if (doc.data().Foto == '') {
-                        foto.style = "background-image: url('https://ceslava.s3-accelerate.amazonaws.com/2016/04/mistery-man-gravatar-wordpress-avatar-persona-misteriosa-510x510.png');"
-                    }
-                    else {
-                        foto.style = "background-image: url('" + doc.data().Foto + "');"
-                    }
-
-                })
-
-            })
-
-        getDocs(query(collection(db, "Technical", "4", "Gardening"), where("Id", "==", user.uid)))
-            .then(querySnapshot => {
-                querySnapshot.forEach((doc) => {
-
-                    var nameandlastname = document.getElementById("nameandlastname")
-                    var numberphone = document.getElementById("phone")
-                    var city = document.getElementById("city")
-                    var age = document.getElementById("age")
-                    var service = document.getElementById("service")
-                    var description = document.getElementById("Description")
-                    var foto = document.getElementById("contenedor-imagen")
-
-
-
-                    nameandlastname.textContent = doc.data().Nombre;
-                    numberphone.textContent = doc.data().Telefono;
-                    city.textContent = doc.data().Ciudad;
-                    age.textContent = doc.data().Edad;
-                    service.textContent = doc.data().Servicio;
-                    description.textContent = doc.data().Descripcion
-                    if (doc.data().Foto == '') {
-                        foto.style = "background-image: url('https://ceslava.s3-accelerate.amazonaws.com/2016/04/mistery-man-gravatar-wordpress-avatar-persona-misteriosa-510x510.png');"
-                    }
-                    else {
-                        foto.style = "background-image: url('" + doc.data().Foto + "');"
-                    }
-
-                })
-            })
-
-        getDocs(query(collection(db, "Technical", "5", "Paint"), where("Id", "==", user.uid)))
-            .then(querySnapshot => {
-                querySnapshot.forEach((doc) => {
-
-                    var nameandlastname = document.getElementById("nameandlastname")
-                    var numberphone = document.getElementById("phone")
-                    var city = document.getElementById("city")
-                    var age = document.getElementById("age")
-                    var service = document.getElementById("service")
-                    var description = document.getElementById("Description")
-                    var foto = document.getElementById("contenedor-imagen")
-
-
-
-                    nameandlastname.textContent = doc.data().Nombre;
-                    numberphone.textContent = doc.data().Telefono;
-                    city.textContent = doc.data().Ciudad;
-                    age.textContent = doc.data().Edad;
-                    service.textContent = doc.data().Servicio;
-                    description.textContent = doc.data().Descripcion
-                    if (doc.data().Foto == '') {
-                        foto.style = "background-image: url('https://ceslava.s3-accelerate.amazonaws.com/2016/04/mistery-man-gravatar-wordpress-avatar-persona-misteriosa-510x510.png');"
-                    }
-                    else {
-                        foto.style = "background-image: url('" + doc.data().Foto + "');"
-                    }
-
-                })
-            })
-        getDocs(query(collection(db, "Technical", "6", "Homeappliances"), where("Id", "==", user.uid)))
-            .then(querySnapshot => {
-                querySnapshot.forEach((doc) => {
-
-                    var nameandlastname = document.getElementById("nameandlastname")
-                    var numberphone = document.getElementById("phone")
-                    var city = document.getElementById("city")
-                    var age = document.getElementById("age")
-                    var service = document.getElementById("service")
-                    var description = document.getElementById("Description")
-                    var foto = document.getElementById("contenedor-imagen")
-
-
-
-                    nameandlastname.textContent = doc.data().Nombre;
-                    numberphone.textContent = doc.data().Telefono;
-                    city.textContent = doc.data().Ciudad;
-                    age.textContent = doc.data().Edad;
-                    service.textContent = doc.data().Servicio;
-                    description.textContent = doc.data().Descripcion
-                    if (doc.data().Foto == '') {
-                        foto.style = "background-image: url('https://ceslava.s3-accelerate.amazonaws.com/2016/04/mistery-man-gravatar-wordpress-avatar-persona-misteriosa-510x510.png');"
-                    }
-                    else {
-                        foto.style = "background-image: url('" + doc.data().Foto + "');"
-                    }
-
-                })
-            })
-        getDocs(query(collection(db, "Technical", "7", "Pets"), where("Id", "==", user.uid)))
-            .then(querySnapshot => {
-                querySnapshot.forEach((doc) => {
-
-                    var nameandlastname = document.getElementById("nameandlastname")
-                    var numberphone = document.getElementById("phone")
-                    var city = document.getElementById("city")
-                    var age = document.getElementById("age")
-                    var service = document.getElementById("service")
-                    var description = document.getElementById("Description")
-                    var foto = document.getElementById("contenedor-imagen")
-
-
-
-                    nameandlastname.textContent = doc.data().Nombre;
-                    numberphone.textContent = doc.data().Telefono;
-                    city.textContent = doc.data().Ciudad;
-                    age.textContent = doc.data().Edad;
-                    service.textContent = doc.data().Servicio;
-                    description.textContent = doc.data().Descripcion
-                    if (doc.data().Foto == '') {
-                        foto.style = "background-image: url('https://ceslava.s3-accelerate.amazonaws.com/2016/04/mistery-man-gravatar-wordpress-avatar-persona-misteriosa-510x510.png');"
-                    }
-                    else {
-                        foto.style = "background-image: url('" + doc.data().Foto + "');"
-                    }
-
-                })
-            })
-        getDocs(query(collection(db, "Technical", "8", "CleanHome"), where("Id", "==", user.uid)))
-            .then(querySnapshot => {
-                querySnapshot.forEach((doc) => {
-
-                    var nameandlastname = document.getElementById("nameandlastname")
-                    var numberphone = document.getElementById("phone")
-                    var city = document.getElementById("city")
-                    var age = document.getElementById("age")
-                    var service = document.getElementById("service")
-                    var description = document.getElementById("Description")
-                    var foto = document.getElementById("contenedor-imagen")
-
-
-
-                    nameandlastname.textContent = doc.data().Nombre;
-                    numberphone.textContent = doc.data().Telefono;
-                    city.textContent = doc.data().Ciudad;
-                    age.textContent = doc.data().Edad;
-                    service.textContent = doc.data().Servicio;
-                    description.textContent = doc.data().Descripcion
-                    if (doc.data().Foto == '') {
-                        foto.style = "background-image: url('https://ceslava.s3-accelerate.amazonaws.com/2016/04/mistery-man-gravatar-wordpress-avatar-persona-misteriosa-510x510.png');"
-                    }
-                    else {
-                        foto.style = "background-image: url('" + doc.data().Foto + "');"
-                    }
-
-                })
-            })
-            getDocs(query(collection(db, "Technical", "9", "Vehicles"), where("Id", "==", user.uid)))
-            .then(querySnapshot => {
-                querySnapshot.forEach((doc) => {
-
-                    var nameandlastname = document.getElementById("nameandlastname")
-                    var numberphone = document.getElementById("phone")
-                    var city = document.getElementById("city")
-                    var age = document.getElementById("age")
-                    var service = document.getElementById("service")
-                    var description = document.getElementById("Description")
-                    var foto = document.getElementById("contenedor-imagen")
-
-
-
-                    nameandlastname.textContent = doc.data().Nombre;
-                    numberphone.textContent = doc.data().Telefono;
-                    city.textContent = doc.data().Ciudad;
-                    age.textContent = doc.data().Edad;
-                    service.textContent = doc.data().Servicio;
-                    description.textContent = doc.data().Descripcion
-                    if (doc.data().Foto == '') {
-                        foto.style = "background-image: url('https://ceslava.s3-accelerate.amazonaws.com/2016/04/mistery-man-gravatar-wordpress-avatar-persona-misteriosa-510x510.png');"
-                    }
-                    else {
-                        foto.style = "background-image: url('" + doc.data().Foto + "');"
-                    }
-
-                })
-            })
-
-
-
-    } else {
-        Swal.fire({
-            icon: 'error',
-            iconColor: '#1A96A0',
-            confirmButtonColor: '#1A96A0',
-            title: '¡No has iniciado sesión!',
-            text: 'Inicia sesión para continuar',
-            allowOutsideClick: false,
-            allowEscapeKey: false,
-            allowEnterKey: false,
-        }).then((result) => {
-            if (result.isConfirmed) {
-                location.href = "/menu/logintecnicos.html";
-            }
-        });
+  for (const pathArr of categories) {
+    const q = query(collection(db, ...pathArr), where("Id", "==", user.uid));
+    const snapshot = await getDocs(q);
+    if (!snapshot.empty) {
+      const docSnap = snapshot.docs[0];
+      userData = docSnap.data();
+      docRef = doc(db, ...pathArr, docSnap.id);
+      docPath = pathArr;
+      break;
     }
+  }
+
+  if (userData) {
+    fillProfile(userData);
+    // Guarda para edición de descripción y foto
+    window._profileDocRef = docRef;
+    window._profileDocPath = docPath;
+  } else {
+    clearProfile();
+  }
+});
+
+// Editar descripción
+document.getElementById("editdescription").addEventListener('click', async (e) => {
+  e.preventDefault();
+  const { value: newDescription } = await Swal.fire({
+    title: 'Editar Descripción',
+    input: 'text',
+    inputPlaceholder: 'Nueva descripción',
+    showCancelButton: true,
+    cancelButtonColor: '#000',
+    confirmButtonColor: '#1A96A0',
+    confirmButtonText: 'Cambiar',
+    cancelButtonText: 'Cancelar'
+  });
+  if (newDescription !== undefined && window._profileDocRef) {
+    await updateDoc(window._profileDocRef, { Descripcion: newDescription });
+    document.getElementById("Description").textContent = newDescription;
+    Swal.fire({ icon: 'success', iconColor: '#1A96A0', confirmButtonColor: '#1A96A0', title: '¡Se cambió correctamente la descripción!' });
+  }
+});
+
+// Cambiar foto de perfil
+document.getElementById("btn-cambiar-foto").addEventListener('click', async (e) => {
+  const { value: file } = await Swal.fire({
+    title: 'Cambiar foto de perfil',
+    html: '<input id="swal-input2" class="inputchangephoto" type="file">',
+    focusConfirm: false,
+    showCancelButton: true,
+    cancelButtonColor: '#000',
+    confirmButtonColor: '#1A96A0',
+    confirmButtonText: 'Cambiar',
+    preConfirm: () => document.getElementById('swal-input2').files[0]
+  });
+  if (file && window._profileDocRef) {
+    const user = auth.currentUser;
+    const storageRef = ref(storage, 'images/' + user.uid);
+    const uploadTask = uploadBytesResumable(storageRef, file);
+
+    uploadTask.on('state_changed', null, null, async () => {
+      const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+      await updateDoc(window._profileDocRef, { Foto: downloadURL });
+      document.getElementById("contenedor-imagen").style.backgroundImage = `url('${downloadURL}')`;
+      Swal.fire({ icon: 'success', iconColor: '#1A96A0', confirmButtonColor: '#1A96A0', title: '¡Se cambió correctamente la foto!' });
+    });
+  }
+});
+
+// Loader (opcional, si tienes un loader visual)
+$(document).ready(function () {
+  $('#loading').fadeOut('slow');
+  $('body').removeClass('hidden');
 });
 
 
-editdescription.addEventListener('click', (e) => {
-    e.preventDefault();
-
-    Swal.fire({
-        title: 'Editar Descripcion',
-        cancelButtonColor: '#000',
-        confirmButtonColor: '#1A96A0',
-        confirmButtonText: 'Cambiar',
-        cancelButtonText: 'Cancelar',
-        showCancelButton: true,
-        html: '<input id="swal-input1" class="inputchangedescription">',
-        focusConfirm: false,
-        preConfirm: () => {
-            const newDescription = document.getElementById('swal-input1').value;
-            onAuthStateChanged(auth, (user) => {
-                if (user) {
-                    getDocs(query(collection(db, "Technical", "1", "Plumbing"), where("Id", "==", user.uid))).
-                        then(querySnapshot => {
-                            querySnapshot.forEach((doc2) => {
-                                updateDoc(doc(db, "Technical", "1", "Plumbing", doc2.id), {
-                                    Descripcion: newDescription
-                                })
-                            })
-                        })
-                    getDocs(query(collection(db, "Technical", "2", "Electricity"), where("Id", "==", user.uid))).
-                        then(querySnapshot => {
-                            querySnapshot.forEach((doc2) => {
-                                updateDoc(doc(db, "Technical", "2", "Electricity", doc2.id), {
-                                    Descripcion: newDescription
-                                })
-                            })
-                        })
-                    getDocs(query(collection(db, "Technical", "3", "locksmith"), where("Id", "==", user.uid))).
-                        then(querySnapshot => {
-                            querySnapshot.forEach((doc2) => {
-                                updateDoc(doc(db, "Technical", "3", "locksmith", doc2.id), {
-                                    Descripcion: newDescription
-                                })
-                            })
-                        })
-                    getDocs(query(collection(db, "Technical", "4", "Gardening"), where("Id", "==", user.uid))).
-                        then(querySnapshot => {
-                            querySnapshot.forEach((doc2) => {
-                                updateDoc(doc(db, "Technical", "4", "Gardening", doc2.id), {
-                                    Descripcion: newDescription
-                                })
-                            })
-                        })
-                    getDocs(query(collection(db, "Technical", "5", "Paint"), where("Id", "==", user.uid))).
-                        then(querySnapshot => {
-                            querySnapshot.forEach((doc2) => {
-                                updateDoc(doc(db, "Technical", "5", "Paint", doc2.id), {
-                                    Descripcion: newDescription
-                                })
-                            })
-                        })
-                    getDocs(query(collection(db, "Technical", "6", "Homeappliances"), where("Id", "==", user.uid))).
-                        then(querySnapshot => {
-                            querySnapshot.forEach((doc2) => {
-                                updateDoc(doc(db, "Technical", "6", "Homeappliances", doc2.id), {
-                                    Descripcion: newDescription
-                                })
-                            })
-                        })
-                    getDocs(query(collection(db, "Technical", "7", "Pets"), where("Id", "==", user.uid))).
-                        then(querySnapshot => {
-                            querySnapshot.forEach((doc2) => {
-                                updateDoc(doc(db, "Technical", "7", "Pets", doc2.id), {
-                                    Descripcion: newDescription
-                                })
-                            })
-                        })
-                    getDocs(query(collection(db, "Technical", "8", "CleanHome"), where("Id", "==", user.uid))).
-                        then(querySnapshot => {
-                            querySnapshot.forEach((doc2) => {
-                                updateDoc(doc(db, "Technical", "8", "CleanHome", doc2.id), {
-                                    Descripcion: newDescription
-                                })
-                            })
-                        })
-                    getDocs(query(collection(db, "Technical", "9", "Vehicles"), where("Id", "==", user.uid))).
-                        then(querySnapshot => {
-                            querySnapshot.forEach((doc2) => {
-                                updateDoc(doc(db, "Technical", "9", "Vehicles", doc2.id), {
-                                    Descripcion: newDescription
-                                })
-                            })
-                        })
-                }
-            })
-            return newDescription;
-        }
-    }).then((result) => {
-        if (result.isConfirmed) {
-            Swal.fire({
-                icon: 'success',
-                iconColor: '#1A96A0',
-                confirmButtonColor: '#1A96A0',
-                title: '¡Se cambio correctamente la descripcion!',
-            })
-        }
-    });
-})
 
 
-var changephoto = document.getElementById("btn-cambiar-foto")
+// Botón abre input file
+document.getElementById('btn-cambiar-foto').addEventListener('click', () => {
+  document.getElementById('input-foto').click();
+});
 
+// Cuando se elige una imagen, subirla
+document.getElementById('input-foto').addEventListener('change', async (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const user = auth.currentUser;
+  if (!user || !profileDocRef) return alert('No hay sesión o perfil cargado');
 
+  // Sube la foto a Storage
+  const storageRef = ref(storage, 'images/' + user.uid);
+  await uploadBytes(storageRef, file);
 
-changephoto.addEventListener('click', (e) => {
-    Swal.fire({
-        title: 'Cambiar foto de perfil',
-        cancelButtonColor: '#000',
-        confirmButtonColor: '#1A96A0',
-        confirmButtonText: 'Cambiar',
-        cancelButtonText: 'Cancelar',
-        showCancelButton: true,
-        html: '<input id="swal-input2" class="inputchangephoto" type="file">',
-        focusConfirm: false,
-    }).then((result) => {
-        if (result.isConfirmed) {
-            
-            onAuthStateChanged(auth, (user) => {
-                if (user) {
+  // Obtén la URL y actualiza el perfil
+  const url = await getDownloadURL(storageRef);
+  await updateDoc(profileDocRef, { Foto: url });
 
-                    const inputphoto = document.getElementById('swal-input2')
-
-                    // Upload file and metadata to the object 'images/mountains.jpg'
-                    const storageRef = ref(storage, 'images/' + user.uid);
-                    const uploadTask = uploadBytesResumable(storageRef, inputphoto.files[0]);
-
-                    // Listen for state changes, errors, and completion of the upload.
-                    uploadTask.on('state_changed',
-                        (snapshot) => {
-                            // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
-                            const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                            console.log('Upload is ' + progress + '% done');
-                            switch (snapshot.state) {
-                                case 'paused':
-                                    console.log('Upload is paused');
-                                    break;
-                                case 'running':
-                                    console.log('Upload is running');
-                                    break;
-                            }
-                        },
-                        (error) => {
-                            // A full list of error codes is available at
-                            // https://firebase.google.com/docs/storage/web/handle-errors
-                            switch (error.code) {
-                                case 'storage/unauthorized':
-                                    // User doesn't have permission to access the object
-                                    break;
-                                case 'storage/canceled':
-                                    // User canceled the upload
-                                    break;
-
-                                // ...
-
-                                case 'storage/unknown':
-                                    // Unknown error occurred, inspect error.serverResponse
-                                    break;
-                            }
-                        },
-                        () => {
-                            // Upload completed successfully, now we can get the download URL
-                            getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-                                getDocs(query(collection(db, "Technical", "1", "Plumbing"), where("Id", "==", user.uid))).
-                                    then(querySnapshot => {
-                                        querySnapshot.forEach((doc2) => {
-                                            updateDoc(doc(db, "Technical", "1", "Plumbing", doc2.id), {
-                                                Foto: downloadURL
-                                            })
-                                        })
-                                    })
-                                getDocs(query(collection(db, "Technical", "2", "Electricity"), where("Id", "==", user.uid))).
-                                    then(querySnapshot => {
-                                        querySnapshot.forEach((doc2) => {
-                                            updateDoc(doc(db, "Technical", "2", "Electricity", doc2.id), {
-                                                Foto: downloadURL
-                                            })
-                                        })
-                                    })
-                                getDocs(query(collection(db, "Technical", "3", "locksmith"), where("Id", "==", user.uid))).
-                                    then(querySnapshot => {
-                                        querySnapshot.forEach((doc2) => {
-                                            updateDoc(doc(db, "Technical", "3", "locksmith", doc2.id), {
-                                                Foto: downloadURL
-                                            })
-                                        })
-                                    })
-                                getDocs(query(collection(db, "Technical", "4", "Gardening"), where("Id", "==", user.uid))).
-                                    then(querySnapshot => {
-                                        querySnapshot.forEach((doc2) => {
-                                            updateDoc(doc(db, "Technical", "4", "Gardening", doc2.id), {
-                                                Foto: downloadURL
-                                            })
-                                        })
-                                    })
-                                getDocs(query(collection(db, "Technical", "5", "Paint"), where("Id", "==", user.uid))).
-                                    then(querySnapshot => {
-                                        querySnapshot.forEach((doc2) => {
-                                            updateDoc(doc(db, "Technical", "5", "Paint", doc2.id), {
-                                                Foto: downloadURL
-                                            })
-                                        })
-                                    })
-                                getDocs(query(collection(db, "Technical", "6", "Homeappliances"), where("Id", "==", user.uid))).
-                                    then(querySnapshot => {
-                                        querySnapshot.forEach((doc2) => {
-                                            updateDoc(doc(db, "Technical", "6", "Homeappliances", doc2.id), {
-                                                Foto: downloadURL
-                                            })
-                                        })
-                                    })
-                                getDocs(query(collection(db, "Technical", "7", "Pets"), where("Id", "==", user.uid))).
-                                    then(querySnapshot => {
-                                        querySnapshot.forEach((doc2) => {
-                                            updateDoc(doc(db, "Technical", "7", "Pets", doc2.id), {
-                                                Foto: downloadURL
-                                            })
-                                        })
-                                    })
-                                getDocs(query(collection(db, "Technical", "8", "CleanHome"), where("Id", "==", user.uid))).
-                                    then(querySnapshot => {
-                                        querySnapshot.forEach((doc2) => {
-                                            updateDoc(doc(db, "Technical", "8", "CleanHome", doc2.id), {
-                                                Foto: downloadURL
-                                            })
-                                        })
-                                    })
-                                getDocs(query(collection(db, "Technical", "9", "Vehicles"), where("Id", "==", user.uid))).
-                                    then(querySnapshot => {
-                                        querySnapshot.forEach((doc2) => {
-                                            updateDoc(doc(db, "Technical", "9", "Vehicles", doc2.id), {
-                                                Foto: downloadURL
-                                            })
-                                        })
-                                    })
-                            });
-                        }
-                    );
-
-                }
-            })
-        }
-    });
-})
-
-
-
-
-
-
+  // Actualiza la imagen en pantalla
+  document.getElementById("contenedor-imagen").style.backgroundImage = `url('${url}')`;
+  alert('¡Foto actualizada!');
+});

@@ -11,13 +11,13 @@ import { getFirestore, getDocs, collection, doc, getDoc, updateDoc, query, where
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyDtfL9s0NOXMfsTOLjhgunQwmei8Y1SG2U",
-  authDomain: "homehero-d79da.firebaseapp.com",
-  projectId: "homehero-d79da",
-  storageBucket: "homehero-d79da.appspot.com",
-  messagingSenderId: "324839475759",
-  appId: "1:324839475759:web:9660c338ee53fe2e1814da",
-  measurementId: "G-BGW4V4Q157"
+  apiKey: "AIzaSyDVySMb0nxA3B4MfFnFNj6z-IaLcF7JGa8",
+  authDomain: "home-hero-new.firebaseapp.com",
+  projectId: "home-hero-new",
+  storageBucket: "home-hero-new.appspot.com",
+  messagingSenderId: "410974637075",
+  appId: "1:410974637075:web:e6cbaa7376221a9684c3e6",
+  measurementId: "G-96EQ038M15"
 };
 
 
