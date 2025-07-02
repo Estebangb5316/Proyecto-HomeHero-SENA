@@ -142,6 +142,50 @@ getDocs(collection(db, "Technical", "6", "Homeappliances")).
         window.open(whatsappLink, '_blank');
       });
 
+       // --- AQUI VA EL BOTÓN DE AGENDAR CITA ---
+          var buttonSchedule = document.createElement('button');
+          buttonSchedule.className = 'button1';
+          buttonSchedule.textContent = "Agendar Cita";
+          card_content.appendChild(buttonSchedule);
+      
+          buttonSchedule.addEventListener('click', async function () {
+            const { value: formValues } = await Swal.fire({
+              title: 'Agendar Cita',
+              html:
+                `<input id="swal-date" type="date" class="swal2-input" placeholder="Fecha">
+                 <input id="swal-time" type="time" class="swal2-input" placeholder="Hora">
+                 <input id="swal-desc" class="swal2-input" placeholder="Descripción del lugar">`,
+              focusConfirm: false,
+              confirmButtonText: 'Agendar',
+              preConfirm: () => {
+                return [
+                  document.getElementById('swal-date').value,
+                  document.getElementById('swal-time').value,
+                  document.getElementById('swal-desc').value
+                ];
+              }
+            });
+      
+            if (formValues) {
+              const [date, time, desc] = formValues;
+              if (!date || !time || !desc) {
+                Swal.fire("Todos los campos son obligatorios.", "", "warning");
+                return;
+              }
+              // Guardar la cita en Firestore (en la colección de citas del técnico)
+              await addDoc(collection(db, "Technical", "1", "Plumbing", doc.id, "Citas"), {
+                fecha: date,
+                hora: time,
+                descripcion: desc,
+                tecnicoId: doc.id,
+                tecnicoNombre: doc.data().Nombre,
+                timestamp: serverTimestamp()
+              });
+              Swal.fire("¡Cita agendada!", "La cita ha sido guardada exitosamente.", "success");
+            }
+          });
+          // --- FIN DEL BOTÓN DE AGENDAR CITA ---
+
     })
   })
 

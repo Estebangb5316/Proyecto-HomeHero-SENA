@@ -27,12 +27,11 @@ const subcollections = [
   ["Technical", "9", "Vehicles"]
 ];
 
+let tecnicos = []; // Variable global para técnicos
+
 // Carga todos los técnicos
 async function cargarTecnicos() {
-  const tbody = document.querySelector("#tabla-tecnicos tbody");
-  tbody.innerHTML = "";
-  let tecnicos = [];
-
+  tecnicos = [];
   for (const path of subcollections) {
     const q = collection(db, ...path);
     const snapshot = await getDocs(q);
@@ -44,11 +43,18 @@ async function cargarTecnicos() {
       });
     });
   }
+  mostrarTecnicos(tecnicos);
+}
 
-  tecnicos.forEach(tecnico => {
+// Mostrar técnicos en la tabla
+function mostrarTecnicos(lista) {
+  const tbody = document.querySelector("#tabla-tecnicos tbody");
+  tbody.innerHTML = "";
+  lista.forEach(tecnico => {
     const tr = document.createElement("tr");
     tr.innerHTML = `
       <td>${tecnico.Nombre || ""}</td>
+      <td>${tecnico.Cedula || ""}</td>
       <td>${tecnico.Telefono || ""}</td>
       <td>${tecnico.Ciudad || ""}</td>
       <td>${tecnico.Edad || ""}</td>
@@ -63,6 +69,25 @@ async function cargarTecnicos() {
     tbody.appendChild(tr);
   });
 }
+
+// Filtro de búsqueda
+document.addEventListener("DOMContentLoaded", () => {
+  const input = document.getElementById("input-busqueda");
+  if (input) {
+    input.addEventListener("input", function () {
+      const valor = this.value.trim().toLowerCase();
+      const filtrados = tecnicos.filter(t =>
+        (t.Nombre && t.Nombre.toLowerCase().includes(valor)) ||
+        (t.Cedula && t.Cedula.toLowerCase().includes(valor)) ||
+        (t.Servicio && t.Servicio.toLowerCase().includes(valor)) ||
+        (t.Telefono && t.Telefono.toLowerCase().includes(valor)) ||
+        (t.Ciudad && t.Ciudad.toLowerCase().includes(valor)) ||
+        (t.Edad && t.Edad.toString().includes(valor))
+      );
+      mostrarTecnicos(filtrados);
+    });
+  }
+});
 
 // Eliminar técnico
 document.addEventListener('click', async (e) => {
@@ -92,6 +117,7 @@ document.addEventListener('click', async (e) => {
       title: 'Editar Técnico',
       html:
         `<input id="swal-nombre" class="swal2-input" placeholder="Nombre" value="${tecnico.Nombre || ""}">
+        <input id="swal-cedula" class="swal2-input" placeholder="Cédula" value="${tecnico.Cedula || ""}">
         <input id="swal-telefono" class="swal2-input" placeholder="Teléfono" value="${tecnico.Telefono || ""}">
         <input id="swal-ciudad" class="swal2-input" placeholder="Ciudad" value="${tecnico.Ciudad || ""}">
         <input id="swal-edad" class="swal2-input" placeholder="Edad" value="${tecnico.Edad || ""}">
@@ -101,6 +127,7 @@ document.addEventListener('click', async (e) => {
       preConfirm: () => {
         return [
           document.getElementById('swal-nombre').value,
+          document.getElementById('swal-cedula').value,
           document.getElementById('swal-telefono').value,
           document.getElementById('swal-ciudad').value,
           document.getElementById('swal-edad').value,
@@ -113,11 +140,12 @@ document.addEventListener('click', async (e) => {
     if (formValues) {
       await updateDoc(docRef, {
         Nombre: formValues[0],
-        Telefono: formValues[1],
-        Ciudad: formValues[2],
-        Edad: formValues[3],
-        Servicio: formValues[4],
-        Descripcion: formValues[5]
+        Cedula: formValues[1],
+        Telefono: formValues[2],
+        Ciudad: formValues[3],
+        Edad: formValues[4],
+        Servicio: formValues[5],
+        Descripcion: formValues[6]
       });
       cargarTecnicos();
     }
